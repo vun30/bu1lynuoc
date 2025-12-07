@@ -1,8 +1,12 @@
 {
   "name": "sep490",
+  "engines": {
+    "node": "18.x"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

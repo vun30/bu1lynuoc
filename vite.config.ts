@@ -5,10 +5,16 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   define: {
-    // Fake process.version để tránh lỗi thư viện cũ đọc nó trên browser
+    // Fake process + process.version
+    "process.env": JSON.stringify({}),
     "process.version": JSON.stringify("v18.18.0"),
-    // Một số thư viện còn đọc globalThis.process
-    "globalThis.process": JSON.stringify({ version: "v18.18.0" }),
+    "process.versions": JSON.stringify({ node: "18.18.0" }),
+    // Nhiều package đọc globalThis.process (đặc biệt là axios, dayjs)
+    "globalThis.process": {
+      version: "v18.18.0",
+      versions: { node: "18.18.0" },
+      env: {},
+    },
   },
   server: {
     port: 5173,
@@ -21,7 +27,7 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'es2022',
+    target: "es2022",
     rollupOptions: {
       output: {
         manualChunks(id) {
